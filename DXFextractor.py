@@ -20,7 +20,7 @@ class Member:
         return f"{self.start}  ->  {self.end}"
 
 
-def round_list(input, degree=4):
+def round_list(input, degree=6):
     for i in range(len(input)):
         input[i] = round(input[i], degree)
     return input
@@ -31,13 +31,14 @@ def extract_from_file(file_name):
     converts dxf lines to Members
 
     :param file_name: file name of the dxf
-    :return: list of Members
+    :return: list of Members, list of two Vectors
     """
-    """ """
     doc = ezdxf.readfile(file_name)
     model_space = doc.modelspace()
     raw_lines = list(model_space.query('LINE[linetype=="Continuous"]'))
-    return [Member(l) for l in raw_lines]  # converts to a member object
+    roots = [Vector(*round_list(list(node.dxf.location)[:2])) for node in model_space.query('POINT')]
+
+    return [Member(l) for l in raw_lines], roots  # converts to a member object
 
 
 def get_nodes_from_lines(lines):
@@ -73,10 +74,8 @@ def get_floor_nodes(nodes):
     return floor_nodes
 
 
-def solve_truss(lines):
-    A = Vector(0.0, 0.0)
-    B = Vector(12.0, 0.0)
-    train_force = 60  # in kN
+def solve_truss(lines, A, B):
+    train_force = 30  # in kN
     #[print(i, l) for i, l in enumerate(lines)]  # prints the lines in vector form: head -> tail
     # get a list of all the nodes, this will be the basis for filling the coefficient matrix
     # structure: key is the node position, value is an array of indicies of the members that meet at that point
@@ -158,7 +157,7 @@ def solve_truss(lines):
             constant_matrix[2*i + 1] = -reactions[reaction_positions.index(key)]  # negative due to formula
 
     '''solve'''
-    # solve system - F1, F2, F3, F4, ..., Ax, Ay, Bx
+    # solve system - F1, F2, F3, F4, ..., Ax, Ay, By
 
     return np.linalg.solve(coefficient_matrix, constant_matrix)  # doesn't work for non simple trusses (non square)
 
