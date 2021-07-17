@@ -83,7 +83,10 @@ def solve_truss(lines):
     nodes = get_nodes_from_lines(lines)
     #print(nodes)
 
+    print("nodes:", len(nodes))
+    print("lines:", len(lines))
     if 2*len(nodes) != len(lines) + 3:
+        print('bad system:')
         # system is indeterminate
         return None
 
@@ -136,12 +139,18 @@ def solve_truss(lines):
         for j, other_pos in enumerate(reaction_positions):
             coefficient_matrix_R[i][j] = other_pos[0] - current_pos[0] + 13
 
+    # this is all fucked up
     # solve reactions - needs to be revised
     if len(reaction_positions) == 1:  # a bit hackish - edge case anyways
         reactions = np.array([-train_force])  # same magic number
     else:
-        reactions = np.linalg.solve(coefficient_matrix_R, constant_matrix_R)
-
+        try:
+            reactions = np.linalg.solve(coefficient_matrix_R, constant_matrix_R)
+        except:
+            # ultra hackish, assume the all the floor beams are equally spaced
+            reactions = np.full((len(reaction_positions),), train_force/len(reaction_positions))
+            print(reactions)
+    reactions = np.full((len(reaction_positions),), train_force / len(reaction_positions))
     '''final matrices construction'''
     # plug the reaction force into the constant matrix
     for i, key in enumerate(nodes.keys()):
@@ -150,6 +159,7 @@ def solve_truss(lines):
 
     '''solve'''
     # solve system - F1, F2, F3, F4, ..., Ax, Ay, Bx
+
     return np.linalg.solve(coefficient_matrix, constant_matrix)  # doesn't work for non simple trusses (non square)
 
 
