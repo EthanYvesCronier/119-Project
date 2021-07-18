@@ -7,15 +7,16 @@ from vector import Vector
 from DXFextractor import *
 
 
-def draw_truss_body(lines, forces):
+def draw_truss_body(lines):
     """ draws the lines to the screen after transforming the coordinates to match screen
 
     :param lines: list of Member objects
     :return: None
     """
     color = (100, 100, 100)
-    for member, force in zip(lines, forces):
-        num_parallel = calculate_parallel(force)
+    for member in lines:
+        #num_parallel = calculate_parallel(force)
+        num_parallel = 1
 
         if num_parallel != 2:  # when equal to 0, 1, 3 (zero force member was disappearing)
             pygame.draw.line(screen, color, transform(member.start), transform(member.end), 1)
@@ -88,41 +89,67 @@ clock = pygame.time.Clock()
 
 np.set_printoptions(linewidth=200)
 file_name = 'bridge3.DXF'
-lines, (A, B) = extract_from_file(file_name)
-moddate = os.stat(file_name)[8]
-forces = np.round(solve_truss(lines, A, B), decimals=4)
-member_forces = forces[:-3]
-Ax, Ay, By = forces[-3:]
+# lines, (A, B) = extract_from_file(file_name)
+# moddate = os.stat(file_name)[8]
+# forces = np.round(solve_truss(lines, A, B), decimals=4)
+# member_forces = forces[:-3]
+# Ax, Ay, By = forces[-3:]
 min_force = -9  # tension
 max_force = 6  # compression
 
+floor_nodes_min = 3
+floor_nodes_max = 3
 
+roof_nodes_min = 3
+roof_nodes_max = 3
+roof_start = 1
+
+floor_nodes = floor_nodes_min
+roof_nodes = roof_nodes_min
 
 running = True
 while running:
-    clock.tick(30)
+    clock.tick(2000)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    try:
-        if os.stat(file_name)[8] != moddate:
-            moddate = os.stat(file_name)[8]
-            lines, (A, B) = extract_from_file(file_name)
-            forces = np.round(solve_truss(lines, A, B), decimals=4)
-            member_forces = forces[:-3]
-    except FileNotFoundError:
-        pass  # may have caught it between saves
+    # try:
+    #     if os.stat(file_name)[8] != moddate:
+    #         moddate = os.stat(file_name)[8]
+    #         lines, (A, B) = extract_from_file(file_name)
+    #         forces = np.round(solve_truss(lines, A, B), decimals=4)
+    #         member_forces = forces[:-3]
+    # except FileNotFoundError:
+    #     pass  # may have caught it between saves
 
+    roof_points = []
+    for p in range(0, roof_nodes):
+        roof_points.append(Vector(roof_start + p*(12-roof_start*2)/(roof_nodes-1), 1))
+
+    floor_points = []
+    for p in range(0, floor_nodes):
+        floor_points.append(Vector(p*12/(floor_nodes-1), 0))
+
+    lines = []
+    for r in roof_points:
+        for f in floor_points:
+            lines.append(Member(r, f))
+    
+    for i in range(1, len(roof_points)):    # this can be combined with the previous one
+        lines.append(Member(roof_points[i-1], roof_points[i]))
+
+    for i in range(1, len(floor_points)):
+        lines.append(Member(floor_points[i-1], floor_points[i]))
 
     screen.fill((240, 240, 240))
-    draw_truss_body(lines, member_forces)
-    write_forces(lines, member_forces)
+    draw_truss_body(lines)
+    # write_forces(lines, member_forces)
 
-    cost, _ = font.render(f"Cost: ${round(calculate_cost(lines, forces), 2)}", (0, 0, 0))
-    valid, _ = font.render(f"Validity: {is_valid(lines, member_forces, A, B)}", (0, 0, 0))
-    screen.blit(cost, (10, 10))
-    screen.blit(valid, (10, 30))
+    # cost, _ = font.render(f"Cost: ${round(calculate_cost(lines, forces), 2)}", (0, 0, 0))
+    # valid, _ = font.render(f"Validity: {is_valid(lines, member_forces, A, B)}", (0, 0, 0))
+    # screen.blit(cost, (10, 10))
+    # screen.blit(valid, (10, 30))
 
     pygame.display.flip()
 

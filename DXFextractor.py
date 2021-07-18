@@ -16,6 +16,10 @@ class Member:
             self.start = Vector(*round_list(line[0][:2]))
             self.end = Vector(*round_list(line[1][:2]))
 
+    def __init__(self, s, e):
+        self.start = s
+        self.end = e
+
     def __str__(self):
         return f"{self.start}  ->  {self.end}"
 
