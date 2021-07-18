@@ -17,7 +17,7 @@ def draw_truss_body(lines, forces):
     for member, force in zip(lines, forces):
         num_parallel = calculate_parallel(force)
 
-        if num_parallel == 1 or num_parallel == 3:
+        if num_parallel != 2:  # when equal to 0, 1, 3 (zero force member was disappearing)
             pygame.draw.line(screen, color, transform(member.start), transform(member.end), 1)
         if num_parallel == 2 or num_parallel == 3:
             offset = 0.03*(member.end - member.start).rotate(90).normalize()
@@ -59,8 +59,11 @@ def calculate_cost(lines, forces):
     return cost
 
 
-def is_valid(lines, forces):
+def is_valid(lines, forces, A, B):
     floor_nodes = get_floor_nodes(get_nodes_from_lines(lines))
+    if B-A != Vector(12, 0):
+        return "Supports A & B invalid"
+
     for i in range(len(floor_nodes) - 1):
         if (Vector(*floor_nodes[0]) - Vector(*floor_nodes[1])).norm() > 3.5:
             return "Floor beams too long"
@@ -84,10 +87,10 @@ pygame.display.set_caption("Why are you running?")
 clock = pygame.time.Clock()
 
 np.set_printoptions(linewidth=200)
-file_name = 'how_15_8.DXF'
-lines = extract_from_file(file_name)
+file_name = 'bridge3.DXF'
+lines, (A, B) = extract_from_file(file_name)
 moddate = os.stat(file_name)[8]
-forces = np.round(solve_truss(lines), decimals=4)
+forces = np.round(solve_truss(lines, A, B), decimals=4)
 member_forces = forces[:-3]
 Ax, Ay, By = forces[-3:]
 min_force = -9  # tension
@@ -105,8 +108,8 @@ while running:
     try:
         if os.stat(file_name)[8] != moddate:
             moddate = os.stat(file_name)[8]
-            lines = extract_from_file(file_name)
-            forces = np.round(solve_truss(lines), decimals=4)
+            lines, (A, B) = extract_from_file(file_name)
+            forces = np.round(solve_truss(lines, A, B), decimals=4)
             member_forces = forces[:-3]
     except FileNotFoundError:
         pass  # may have caught it between saves
@@ -117,7 +120,7 @@ while running:
     write_forces(lines, member_forces)
 
     cost, _ = font.render(f"Cost: ${round(calculate_cost(lines, forces), 2)}", (0, 0, 0))
-    valid, _ = font.render(f"Validity: {is_valid(lines, member_forces)}", (0, 0, 0))
+    valid, _ = font.render(f"Validity: {is_valid(lines, member_forces, A, B)}", (0, 0, 0))
     screen.blit(cost, (10, 10))
     screen.blit(valid, (10, 30))
 
