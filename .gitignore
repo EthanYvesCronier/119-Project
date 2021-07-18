@@ -112,3 +112,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# autocad stuff
+.err
+.bak
+
+PyCharm stuff
+/.idea
