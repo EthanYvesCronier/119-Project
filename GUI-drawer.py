@@ -65,7 +65,7 @@ def is_valid(lines, forces, A, B):
         return "Supports A & B invalid"
 
     for i in range(len(floor_nodes) - 1):
-        if (Vector(*floor_nodes[0]) - Vector(*floor_nodes[1])).norm() > 3.5:
+        if (Vector(*floor_nodes[i]) - Vector(*floor_nodes[i+1])).norm() > 3.5:
             return "Floor beams too long"
 
     for line in lines:

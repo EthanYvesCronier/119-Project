@@ -75,8 +75,7 @@ def get_floor_nodes(nodes):
 
 
 def solve_truss(lines, A, B):
-    train_force = 30  # in kN
-    #[print(i, l) for i, l in enumerate(lines)]  # prints the lines in vector form: head -> tail
+    train_dist = 2.5  # kN/m, half of 5 since one side of two
     # get a list of all the nodes, this will be the basis for filling the coefficient matrix
     # structure: key is the node position, value is an array of indicies of the members that meet at that point
     nodes = get_nodes_from_lines(lines)
@@ -119,42 +118,19 @@ def solve_truss(lines, A, B):
             coefficient_matrix[2*member][index] = delta[0]  # x
             coefficient_matrix[2*member+1][index] = delta[1]  # y
 
-    '''get the floor beam nodes'''
+    '''get reaction forces'''
     # remember constant_matrix goes [-m1x, -m1y, -m2x, -m2y, ... -mnx, -mny]
     # where the Ms are external forces acting on the system
     # NOTE THE NEGATIVE SIGNS
     reaction_positions = get_floor_nodes(nodes)
-    reaction_positions = reaction_positions[1:-1]  # take out both of the anchors A and B
 
-    coefficient_matrix_R = np.ones((len(reaction_positions), len(reaction_positions)))  # for the summation equation
-    constant_matrix_R = np.zeros((len(reaction_positions)))
+    reactions = np.zeros((len(reaction_positions),))
+    for i in range(len(reaction_positions) - 1):
+        force = train_dist * (reaction_positions[i+1] - reaction_positions[i]).norm() / 2
+        reactions[i] += force
+        reactions[i+1] += force
+    print(reactions)
 
-    '''populate external forces in the constant matrix'''
-    # plug in coefficient matrix R and the constant matrix R
-    for i, current_pos in enumerate(reaction_positions):
-        # negate to get trusses perspective NOT trains perspective
-        constant_matrix_R[i] = - (6-current_pos[0]+13) * train_force
-
-        for j, other_pos in enumerate(reaction_positions):
-            coefficient_matrix_R[i][j] = other_pos[0] - current_pos[0] + 13
-
-    # this is all fucked up
-    # solve reactions - needs to be revised
-    if len(reaction_positions) == 1:  # a bit hackish - edge case anyways
-        reactions = np.array([-train_force])  # same magic number
-    else:
-        try:
-            reactions = np.linalg.solve(coefficient_matrix_R, constant_matrix_R)
-        except:
-            # ultra hackish, assume the all the floor beams are equally spaced
-            reactions = np.full((len(reaction_positions),), train_force/len(reaction_positions))
-            reactions[0] = ((reaction_positions[1][0] - reaction_positions[0][0]) / 2) * train_force / 12
-            reactions[len(reaction_positions) - 1] = ((reaction_positions[len(reaction_positions) - 1][0] - reaction_positions[len(reaction_positions) - 2][0]) / 2) * train_force / 12
-            for i in range(1, len(reaction_positions) - 1):
-                reactions[i] = ((reaction_positions[i][0] - reaction_positions[i - 1][0]) / 2 + (reaction_positions[i + 1][0] - reaction_positions[i][0]) / 2) * train_force / 12
-
-            print(reactions)
-    reactions = np.full((len(reaction_positions),), train_force / len(reaction_positions))
     '''final matrices construction'''
     # plug the reaction force into the constant matrix
     for i, key in enumerate(nodes.keys()):
@@ -163,7 +139,6 @@ def solve_truss(lines, A, B):
 
     '''solve'''
     # solve system - F1, F2, F3, F4, ..., Ax, Ay, By
-
     return np.linalg.solve(coefficient_matrix, constant_matrix)  # doesn't work for non simple trusses (non square)
 
 
