@@ -148,6 +148,11 @@ def solve_truss(lines, A, B):
         except:
             # ultra hackish, assume the all the floor beams are equally spaced
             reactions = np.full((len(reaction_positions),), train_force/len(reaction_positions))
+            reactions[0] = ((reaction_positions[1][0] - reaction_positions[0][0]) / 2) * train_force / 12
+            reactions[len(reaction_positions) - 1] = ((reaction_positions[len(reaction_positions) - 1][0] - reaction_positions[len(reaction_positions) - 2][0]) / 2) * train_force / 12
+            for i in range(1, len(reaction_positions) - 1):
+                reactions[i] = ((reaction_positions[i][0] - reaction_positions[i - 1][0]) / 2 + (reaction_positions[i + 1][0] - reaction_positions[i][0]) / 2) * train_force / 12
+
             print(reactions)
     reactions = np.full((len(reaction_positions),), train_force / len(reaction_positions))
     '''final matrices construction'''
