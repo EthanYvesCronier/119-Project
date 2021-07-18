@@ -84,7 +84,7 @@ pygame.display.set_caption("Why are you running?")
 clock = pygame.time.Clock()
 
 np.set_printoptions(linewidth=200)
-file_name = 'bridge3.DXF'
+file_name = 'how_15_8.DXF'
 lines = extract_from_file(file_name)
 moddate = os.stat(file_name)[8]
 forces = np.round(solve_truss(lines), decimals=4)
