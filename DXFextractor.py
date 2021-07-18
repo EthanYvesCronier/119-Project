@@ -13,7 +13,7 @@ class Member:
             self.start = Vector(*round_list(list(line.dxf.start)[:2]))
             self.end = Vector(*round_list(list(line.dxf.end)[:2]))
         else:  # two tuples or whatever
-            self.start = Vector(*round_list(line[0][:2]))
+            self.start = Vector(*round_list(line[0][:2]))  # kinda jank
             self.end = Vector(*round_list(line[1][:2]))
 
     def __str__(self):
@@ -21,9 +21,10 @@ class Member:
 
 
 def round_list(input, degree=6):
+    output = []
     for i in range(len(input)):
-        input[i] = round(input[i], degree)
-    return input
+        output.append(round(input[i], degree))
+    return output
 
 
 def extract_from_file(file_name):
@@ -81,8 +82,8 @@ def solve_truss(lines, A, B):
     nodes = get_nodes_from_lines(lines)
     #print(nodes)
 
-    print("nodes:", len(nodes))
-    print("lines:", len(lines))
+    # print("nodes:", len(nodes))
+    # print("lines:", len(lines))
     if 2*len(nodes) != len(lines) + 3:
         print('bad system:')
         # system is indeterminate
@@ -129,7 +130,6 @@ def solve_truss(lines, A, B):
         force = train_dist * (reaction_positions[i+1] - reaction_positions[i]).norm() / 2
         reactions[i] += force
         reactions[i+1] += force
-    print(reactions)
 
     '''final matrices construction'''
     # plug the reaction force into the constant matrix

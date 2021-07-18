@@ -87,7 +87,7 @@ pygame.display.set_caption("Why are you running?")
 clock = pygame.time.Clock()
 
 np.set_printoptions(linewidth=200)
-file_name = 'bridge3.DXF'
+file_name = 'cheapest.DXF'
 lines, (A, B) = extract_from_file(file_name)
 moddate = os.stat(file_name)[8]
 forces = np.round(solve_truss(lines, A, B), decimals=4)
@@ -111,9 +111,9 @@ while running:
             lines, (A, B) = extract_from_file(file_name)
             forces = np.round(solve_truss(lines, A, B), decimals=4)
             member_forces = forces[:-3]
+            Ax, Ay, By = forces[-3:]
     except FileNotFoundError:
         pass  # may have caught it between saves
-
 
     screen.fill((240, 240, 240))
     draw_truss_body(lines, member_forces)
