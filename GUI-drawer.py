@@ -45,7 +45,7 @@ def write_forces(lines, forces):
 def transform(vector):
     scale = 100
     x_offset = 100
-    y_offset = 400
+    y_offset = 600
 
     return scale*vector.matrix_mult([[1, 0], [0, -1]]) + Vector(x_offset, y_offset)
 
@@ -87,7 +87,7 @@ pygame.display.set_caption("Why are you running?")
 clock = pygame.time.Clock()
 
 np.set_printoptions(linewidth=200)
-file_name = 'cheapest.DXF'
+file_name = 'bridge6-optimised.DXF'
 lines, (A, B) = extract_from_file(file_name)
 moddate = os.stat(file_name)[8]
 forces = np.round(solve_truss(lines, A, B), decimals=4)
