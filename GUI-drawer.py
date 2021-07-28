@@ -118,6 +118,8 @@ def save_file(lines, A, B):
     top.withdraw()
     file_name = tkinter.filedialog.asksaveasfilename(filetypes=[('DXF Files', '*.DXF')], defaultextension=[('DXF Files', '*.DXF')])
     top.destroy()
+    if file_name == '':
+        return False
     doc = ezdxf.new('R2010')
     msp = doc.modelspace()
     for line in lines:
@@ -145,7 +147,7 @@ y_offset = 300
 
 np.set_printoptions(linewidth=200)
 # file_name = 'cheapest.DXF'
-file_name = '961.DXF'
+file_name = 'bridgeEC.DXF'
 lines, (A, B) = extract_from_file(file_name)
 moddate = os.stat(file_name)[8]
 forces = np.round(solve_truss(lines, A, B), decimals=4)
@@ -217,6 +219,12 @@ while running:
             forces = np.round(solve_truss(lines, A, B), decimals=4)
             member_forces = forces[:-3]
             Ax, Ay, By = forces[-3:]
+
+            nodes = get_nodes_from_lines(lines)  # value indices are line indices NOT node indices
+            node_keys = list(nodes.keys())
+            node_keys.sort(key=lambda e: e[0])
+            adjacency_matrix = get_adjacency_matrix(lines,
+                                                    node_keys)  # adjacency matrix will not change for a particular topology
     except FileNotFoundError:
         pass  # may have caught it between saves
 
