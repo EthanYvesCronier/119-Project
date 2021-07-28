@@ -89,7 +89,7 @@ def randomize_positions(node_positions, A, B, selection_rate, radius):
     return node_positions
 
 
-file_name = 'bridge6.DXF'
+file_name = '961.DXF'
 min_force = -9  # tension
 max_force = 6  # compression
 
@@ -110,8 +110,8 @@ adjacency_matrix = get_adjacency_matrix(lines, node_keys)  # adjacency matrix wi
 here modify the nodes, then test to see if it is cheaper etc
 '''
 lowest_cost = cost
-# optimal = node_keys[:]
-optimal = [(0.0, 0.0), (2.53557, 0.0), (2.535582, 5.00096), (6.0, 0.0), (9.46543, 0.0), (9.46543, 4.999009), (12.0, 0.0)]
+optimal = node_keys[:]
+# optimal = [(0.0, 0.0), (2.53557, 0.0), (2.535582, 5.00096), (6.0, 0.0), (9.46543, 0.0), (9.46543, 4.999009), (12.0, 0.0)]
 lowest_nodes = [Vector(*i) for i in optimal]
 lowest_nodes.sort(key=lambda e: e[0])
 
@@ -168,3 +168,8 @@ another improvement could be to automatically save the cheapest design to file
 # [(0.0, 0.0), (2.5334, 0.0), (2.5334, 4.997), (6.0, 0.0), (9.4666, 0.0), (9.4666, 4.997), (12.0, 0.0)] 1241.42
 # [(0.0, 0.0), (2.535578867554359, 0.0), (2.5355828034598775, 5.000965708809768), (6.0, 0.0), (9.465439909794387, 0.0), (9.465434437926309, 4.9990093762109655), (12.0, 0.0)] 1137.7996083638873
 # [(0.0, 0.0), (2.53626300245894, 0.0), (2.5362803558770404, 5.001012125997316), (6.0, 0.0), (9.464980213316887, 0.0), (9.464979367684418, 4.999006981878498), (12.0, 0.0)] 1137.7911569518865
+
+
+'''
+961.DXF
+'''

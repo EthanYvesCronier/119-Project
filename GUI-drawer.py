@@ -36,8 +36,8 @@ def draw_truss_body(lines, forces, mouse_pos):
 
 def calculate_parallel(force):
     if force < 0:  # tension
-        return min(math.ceil(force / min_force), 3)  # number of members stacked x2 or x3
-    return min(math.ceil(force / max_force), 3)
+        return max(1, min(math.ceil(force / min_force), 3))  # number of members stacked x2 or x3
+    return max(1, min(math.ceil(force / max_force), 3))
 
 
 def write_forces(lines, forces):
@@ -147,7 +147,7 @@ y_offset = 300
 
 np.set_printoptions(linewidth=200)
 # file_name = 'cheapest.DXF'
-file_name = 'bridgeEC.DXF'
+file_name = '961.DXF'
 lines, (A, B) = extract_from_file(file_name)
 moddate = os.stat(file_name)[8]
 forces = np.round(solve_truss(lines, A, B), decimals=4)
