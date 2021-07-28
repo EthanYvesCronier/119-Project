@@ -157,7 +157,6 @@ max_force = 6  # compression
 nodes = get_nodes_from_lines(lines)  # value indices are line indices NOT node indices
 node_keys = list(nodes.keys())
 node_keys.sort(key=lambda e: e[0])
-print(node_keys)
 adjacency_matrix = get_adjacency_matrix(lines, node_keys)  # adjacency matrix will not change for a particular topology
 
 current_node_index = None
@@ -207,9 +206,6 @@ while running:
             node_keys[current_node_index] = inverse_transform(Vector(*pygame.mouse.get_pos()))
 
         lines = reconstruct_lines(node_keys, adjacency_matrix)
-        print([str(l) for l in lines])
-        print()
-        print(A, B)
         forces = np.round(solve_truss(lines, A, B), decimals=4)
         member_forces = forces[:-3]
         Ax, Ay, By = forces[-3:]
