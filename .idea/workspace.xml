@@ -4,7 +4,6 @@
     <list default="true" id="ae907bbe-81d9-4549-afdc-5c82f1ee0331" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI-drawer.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI-drawer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Optimizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Optimizer.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,13 +11,32 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/Optimizer.py">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="391">
+                    <caret line="111" column="18" lean-forward="true" selection-start-line="111" selection-start-column="18" selection-end-line="111" selection-end-column="18" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DXFextractor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="19" column="46" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
+            <state relative-caret-position="153">
+              <caret line="36" column="35" lean-forward="true" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -26,34 +44,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/fromnumeric.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="714">
-              <caret line="55" selection-start-line="55" selection-end-line="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/GUI-drawer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
-              <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
+            <state relative-caret-position="2414">
+              <caret line="166" column="36" lean-forward="true" selection-start-line="166" selection-start-column="36" selection-end-line="166" selection-end-column="36" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Optimizer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="71">
-              <caret line="114" column="44" lean-forward="true" selection-start-line="114" selection-start-column="44" selection-end-line="114" selection-end-column="44" />
-              <folding>
-                <element signature="e#13#38#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -96,8 +93,8 @@
         <option value="$PROJECT_DIR$/vector.py" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/DXFextractor.py" />
-        <option value="$PROJECT_DIR$/GUI-drawer.py" />
         <option value="$PROJECT_DIR$/Optimizer.py" />
+        <option value="$PROJECT_DIR$/GUI-drawer.py" />
       </list>
     </option>
   </component>
@@ -112,6 +109,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -123,7 +121,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -237,7 +234,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32932165" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.44745395" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.22318527" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39869988" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -350,39 +347,36 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Optimizer" />
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/fromnumeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="428">
+          <caret line="55" selection-start-line="55" selection-end-line="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Optimizer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="111" column="18" lean-forward="true" selection-start-line="111" selection-start-column="18" selection-end-line="111" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DXFextractor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="19" column="46" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
+        <state relative-caret-position="153">
+          <caret line="36" column="35" lean-forward="true" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/numpy/core/fromnumeric.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="55" selection-start-line="55" selection-end-line="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GUI-drawer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="47" column="18" selection-start-line="47" selection-start-column="18" selection-end-line="47" selection-end-column="18" />
+        <state relative-caret-position="2414">
+          <caret line="166" column="36" lean-forward="true" selection-start-line="166" selection-start-column="36" selection-end-line="166" selection-end-column="36" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Optimizer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="71">
-          <caret line="114" column="44" lean-forward="true" selection-start-line="114" selection-start-column="44" selection-end-line="114" selection-end-column="44" />
-          <folding>
-            <element signature="e#13#38#0" expanded="true" />
           </folding>
         </state>
       </provider>

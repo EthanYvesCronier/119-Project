@@ -2,12 +2,15 @@ import pygame
 import pygame.freetype
 import os
 import math
+import tkinter
+import tkinter.filedialog
+import ezdxf
 import numpy as np
 from vector import Vector
 from DXFextractor import *
 
 
-def draw_truss_body(lines, forces):
+def draw_truss_body(lines, forces, mouse_pos):
     """ draws the lines to the screen after transforming the coordinates to match screen
 
     :param lines: list of Member objects
@@ -24,8 +27,11 @@ def draw_truss_body(lines, forces):
             pygame.draw.line(screen, color, transform(member.start + offset), transform(member.end + offset), 1)
             pygame.draw.line(screen, color, transform(member.start - offset), transform(member.end - offset), 1)
 
-        pygame.draw.circle(screen, (0, 0, 0), round(transform(member.start)), 5)
-        pygame.draw.circle(screen, (0, 0, 0), round(transform(member.end)), 5)
+        start_color = (100, 0, 0) if (transform(member.start) - mouse_pos).norm() < r else (0, 0, 0)
+        end_color = (100, 0, 0) if (transform(member.end) - mouse_pos).norm() < r else (0, 0, 0)
+
+        pygame.draw.circle(screen, start_color, round(transform(member.start)), 5)
+        pygame.draw.circle(screen, end_color, round(transform(member.end)), 5)
 
 
 def calculate_parallel(force):
@@ -43,11 +49,11 @@ def write_forces(lines, forces):
 
 
 def transform(vector):
-    scale = 100
-    x_offset = 100
-    y_offset = 600
-
     return scale*vector.matrix_mult([[1, 0], [0, -1]]) + Vector(x_offset, y_offset)
+
+
+def inverse_transform(vector):
+    return (1/scale)*(vector - Vector(x_offset, y_offset)).matrix_mult([[1, 0], [0, -1]])
 
 
 def calculate_cost(lines, forces):
@@ -79,6 +85,51 @@ def is_valid(lines, forces, A, B):
     return "Design Valid"
 
 
+def get_adjacency_matrix(lines, node_positons):  # this truss is bassically just a graph use DSA of graph
+    """ constructs an adjacency matrix of node positions where each connection represents a line
+    refer to matrix representation of a graph from MTE 140 :P
+
+    :param lines: this is a list of member objects representing the truss
+    :param node_positons: this is the list of nodes that make up the truss, corresponds to the matrix
+    :return: returns the adjacency matrix for the nodes, in the order specified in node_positions
+    """
+    matrix = np.zeros((len(node_positons),)*2)
+    node_hash = {key: value for value, key in enumerate(node_positons)}
+    for line in lines:
+        i = node_hash[line.start]
+        j = node_hash[line.end]
+        matrix[i][j] = 1
+        matrix[j][i] = 1
+    return matrix
+
+
+def reconstruct_lines(nodes, adjacency_matrix):
+    # only have to traverse the upper or lower triangle only, this is an undirected graph
+    lines = []
+    for row in range(adjacency_matrix.shape[0]):
+        for col in range(row):
+            if adjacency_matrix[row][col]:  # if an adjacency exists
+                lines.append(Member((nodes[row], nodes[col])))
+    return lines
+
+
+def save_file(lines, A, B):
+    top = tkinter.Tk()
+    top.withdraw()
+    file_name = tkinter.filedialog.asksaveasfilename(filetypes=[('DXF Files', '*.DXF')], defaultextension=[('DXF Files', '*.DXF')])
+    top.destroy()
+    doc = ezdxf.new('R2010')
+    msp = doc.modelspace()
+    for line in lines:
+        msp.add_line(tuple(line.start), tuple(line.end), dxfattribs={"linetype": "Continuous"})
+
+    for anchor in (A, B):
+        msp.add_point(tuple(anchor))
+
+    doc.saveas(file_name)
+
+
+
 pygame.init()
 pygame.freetype.init()
 font = pygame.freetype.SysFont("", 11)
@@ -86,8 +137,15 @@ screen = pygame.display.set_mode((1500, 800))
 pygame.display.set_caption("Why are you running?")
 clock = pygame.time.Clock()
 
+# transform consts
+r = 5  # radius to snap to node
+scale = 100
+x_offset = 100
+y_offset = 600
+
 np.set_printoptions(linewidth=200)
-file_name = 'bridge6-optimised.DXF'
+# file_name = 'cheapest.DXF'
+file_name = 'bridge6.DXF'
 lines, (A, B) = extract_from_file(file_name)
 moddate = os.stat(file_name)[8]
 forces = np.round(solve_truss(lines, A, B), decimals=4)
@@ -96,7 +154,12 @@ Ax, Ay, By = forces[-3:]
 min_force = -9  # tension
 max_force = 6  # compression
 
+nodes = get_nodes_from_lines(lines)  # value indices are line indices NOT node indices
+node_keys = list(nodes.keys())
+node_keys.sort(key=lambda e: e[0])
+adjacency_matrix = get_adjacency_matrix(lines, node_keys)  # adjacency matrix will not change for a particular topology
 
+current_node_index = None
 
 running = True
 while running:
@@ -104,6 +167,33 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for i, node in enumerate(node_keys):
+                if (transform(node) - Vector(*pygame.mouse.get_pos())).norm() < r:
+                    current_node_index = i
+                    break
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_s and pygame.key.get_mods() & pygame.KMOD_CTRL:
+                # save the current truss
+                save_file(lines, A, B)
+
+        if event.type == pygame.MOUSEBUTTONUP:
+            current_node_index = None
+
+    if pygame.mouse.get_pressed()[0] and current_node_index is not None:
+        if node_keys[current_node_index] != A and node_keys[current_node_index] != B:  # dont want to mess with A or B
+            if node_keys[current_node_index][1] == 0:
+                # floor node can only be manipulated in x
+                new = inverse_transform(Vector(*pygame.mouse.get_pos())).matrix_mult([[1, 0], [0, 0]])
+                node_keys[current_node_index] = new
+            else:
+                # not a floor node, can be manipulated in x and y
+                node_keys[current_node_index] = inverse_transform(Vector(*pygame.mouse.get_pos()))
+
+            lines = reconstruct_lines(node_keys, adjacency_matrix)
+            forces = np.round(solve_truss(lines, A, B), decimals=4)
+            member_forces = forces[:-3]
+            Ax, Ay, By = forces[-3:]
 
     try:
         if os.stat(file_name)[8] != moddate:
@@ -116,7 +206,7 @@ while running:
         pass  # may have caught it between saves
 
     screen.fill((240, 240, 240))
-    draw_truss_body(lines, member_forces)
+    draw_truss_body(lines, member_forces, Vector(*pygame.mouse.get_pos()))
     write_forces(lines, member_forces)
 
     cost, _ = font.render(f"Cost: ${round(calculate_cost(lines, forces), 2)}", (0, 0, 0))
