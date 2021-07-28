@@ -138,7 +138,7 @@ class Vector(object):
 
     def __round__(self, n=None):
         """ Returns the 'rounded' vector"""
-        return [round(i, n) for i in self.values]
+        return Vector(*[round(i, n) for i in self.values])
 
     def __hash__(self):
         """ Creates a hash of the object based on its values"""

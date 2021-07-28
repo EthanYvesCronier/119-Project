@@ -141,11 +141,11 @@ clock = pygame.time.Clock()
 r = 5  # radius to snap to node
 scale = 100
 x_offset = 100
-y_offset = 600
+y_offset = 300
 
 np.set_printoptions(linewidth=200)
 # file_name = 'cheapest.DXF'
-file_name = 'bridge6.DXF'
+file_name = '961.DXF'
 lines, (A, B) = extract_from_file(file_name)
 moddate = os.stat(file_name)[8]
 forces = np.round(solve_truss(lines, A, B), decimals=4)
@@ -157,6 +157,7 @@ max_force = 6  # compression
 nodes = get_nodes_from_lines(lines)  # value indices are line indices NOT node indices
 node_keys = list(nodes.keys())
 node_keys.sort(key=lambda e: e[0])
+print(node_keys)
 adjacency_matrix = get_adjacency_matrix(lines, node_keys)  # adjacency matrix will not change for a particular topology
 
 current_node_index = None
@@ -181,19 +182,37 @@ while running:
             current_node_index = None
 
     if pygame.mouse.get_pressed()[0] and current_node_index is not None:
-        if node_keys[current_node_index] != A and node_keys[current_node_index] != B:  # dont want to mess with A or B
-            if node_keys[current_node_index][1] == 0:
+        if node_keys[current_node_index][1] == 0:
+            if node_keys[current_node_index][0] != 0 and node_keys[current_node_index][0] != 12:  # at equality this is the end of the road, do not touch
                 # floor node can only be manipulated in x
                 new = inverse_transform(Vector(*pygame.mouse.get_pos())).matrix_mult([[1, 0], [0, 0]])
                 node_keys[current_node_index] = new
-            else:
-                # not a floor node, can be manipulated in x and y
-                node_keys[current_node_index] = inverse_transform(Vector(*pygame.mouse.get_pos()))
 
-            lines = reconstruct_lines(node_keys, adjacency_matrix)
-            forces = np.round(solve_truss(lines, A, B), decimals=4)
-            member_forces = forces[:-3]
-            Ax, Ay, By = forces[-3:]
+        elif node_keys[current_node_index] == A:
+            A = inverse_transform(Vector(*pygame.mouse.get_pos())).matrix_mult([[0, 0], [0, 1]])
+            A = round(A, 4)
+            node_keys[current_node_index] = A
+            B_index = node_keys.index(B)
+            B = A + Vector(12, 0)
+            node_keys[B_index] = B
+        elif node_keys[current_node_index] == B:
+            B = inverse_transform(Vector(*pygame.mouse.get_pos())).matrix_mult([[0, 0], [0, 1]]) + Vector(12, 0)
+            B = round(B, 4)
+            node_keys[current_node_index] = B
+            A_index = node_keys.index(A)
+            A = B + Vector(-12, 0)
+            node_keys[A_index] = A
+        else:
+            # not a floor node, can be manipulated in x and y
+            node_keys[current_node_index] = inverse_transform(Vector(*pygame.mouse.get_pos()))
+
+        lines = reconstruct_lines(node_keys, adjacency_matrix)
+        print([str(l) for l in lines])
+        print()
+        print(A, B)
+        forces = np.round(solve_truss(lines, A, B), decimals=4)
+        member_forces = forces[:-3]
+        Ax, Ay, By = forces[-3:]
 
     try:
         if os.stat(file_name)[8] != moddate:
