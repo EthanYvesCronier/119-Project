@@ -4,12 +4,11 @@ import math
 import random
 from DXFextractor import *
 
-
 # copied functions
 def calculate_parallel(force):
     if force < 0:  # tension
-        return min(math.ceil(force / min_force), 3)  # number of members stacked x2 or x3
-    return min(math.ceil(force / max_force), 3)
+        return max(1, min(math.ceil(force / min_force), 3))  # number of members stacked x2 or x3
+    return max(1, min(math.ceil(force / max_force), 3))
 
 
 def calculate_cost(lines, forces):
@@ -89,7 +88,7 @@ def randomize_positions(node_positions, A, B, selection_rate, radius):
     return node_positions
 
 
-file_name = '961.DXF'
+file_name = 'bridge3.DXF'
 min_force = -9  # tension
 max_force = 6  # compression
 
@@ -119,9 +118,9 @@ t1 = reconstruct_lines(lowest_nodes, adjacency_matrix)
 t2 = np.round(solve_truss(t1, A, B), decimals=4)
 print(calculate_cost(t1, t2), is_valid(t1, t2[:-3], A, B))
 
-for j in range(20):
+for j in range(30):
     for i in range(2000):
-        new_node_positions = randomize_positions(lowest_nodes[:], A, B, 0.1, 0.005)
+        new_node_positions = randomize_positions(lowest_nodes[:], A, B, 0.1, 0.0005)
 
         lines2 = reconstruct_lines(new_node_positions, adjacency_matrix)
         forces2 = np.round(solve_truss(lines2, A, B), decimals=4)
