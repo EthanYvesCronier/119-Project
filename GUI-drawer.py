@@ -143,7 +143,7 @@ clock = pygame.time.Clock()
 r = 5  # radius to snap to node
 scale = 100
 x_offset = 100
-y_offset = 100
+y_offset = 750
 
 np.set_printoptions(linewidth=200)
 # file_name = 'cheapest.DXF'
@@ -187,6 +187,13 @@ while running:
             if node_keys[current_node_index][0] != 0 and node_keys[current_node_index][0] != 12:  # at equality this is the end of the road, do not touch
                 # floor node can only be manipulated in x
                 new = inverse_transform(Vector(*pygame.mouse.get_pos())).matrix_mult([[1, 0], [0, 0]])
+                
+                # stay symmetrical if it already is
+                for i in range(0, len(node_keys)):
+                    node = node_keys[i]
+                    if i != current_node_index and node[1] == 0 and node[0] == 12 - node_keys[current_node_index][0]:
+                        node_keys[i] = Vector(12-new[0], 0)
+
                 node_keys[current_node_index] = new
 
         elif node_keys[current_node_index] == A:
@@ -205,7 +212,15 @@ while running:
             node_keys[A_index] = A
         else:
             # not a floor node, can be manipulated in x and y
-            node_keys[current_node_index] = inverse_transform(Vector(*pygame.mouse.get_pos()))
+            new = inverse_transform(Vector(*pygame.mouse.get_pos()))
+
+            # stay symmetrical if it already is
+            for i in range(0, len(node_keys)):
+                node = node_keys[i]
+                if i != current_node_index and node[1] == node_keys[current_node_index][1] and node[0] == 12 - node_keys[current_node_index][0]:
+                    node_keys[i] = Vector(12-new[0], new[1])
+
+            node_keys[current_node_index] = new
 
         lines = reconstruct_lines(node_keys, adjacency_matrix)
         forces = np.round(solve_truss(lines, A, B), decimals=4)
