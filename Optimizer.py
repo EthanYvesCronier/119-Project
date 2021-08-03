@@ -68,27 +68,46 @@ def reconstruct_lines(nodes, adjacency_matrix):
     return lines
 
 
-def randomize_positions(node_positions, A, B, selection_rate, radius):
-    for i, node in enumerate(node_positions):
-        if node == A or node == B:  # dont change these bad boys
-            continue
-        if node == Vector(6.0, 0):  # midpoint symmetry
-            continue
+def save_file(lines, A, B):
+    doc = ezdxf.new('R2010')
+    msp = doc.modelspace()
+    for line in lines:
+        msp.add_line(tuple(line.start), tuple(line.end), dxfattribs={"linetype": "Continuous"})
 
+    for anchor in (A, B):
+        msp.add_point(tuple(anchor))
+
+    doc.saveas('O.DXF')
+
+
+def randomize_positions(node_positions, A, B, selection_rate, radius):
+    a = A
+    b = B
+    for i, node in enumerate(node_positions):
+        if node == Vector(0, 0) or node == Vector(12, 0):  # dont change these bad boys
+            continue
         if random.random() < selection_rate:  # if true, perform the randomization
             rand_y = 0
             rand_x = 0
 
             if node[1] != 0:  # randomize the y direction
                 rand_y = 2 * radius * (random.random() - 0.5)
-            if node[0] != 6:
+            if node[0] != 6 and node != a and node != b:   # randomize the x direction
                 rand_x = 2 * radius * (random.random() - 0.5)
+
             vec = Vector(rand_x, rand_y)
-            node_positions[i] += vec
-    return node_positions
+            if node == a or node == b:
+                pass
+            else:
+                node_positions[i] += vec
+    return node_positions, a, b
 
 
+<<<<<<< Updated upstream
 file_name = 'bridge3.DXF'
+=======
+file_name = '1040.DXF'
+>>>>>>> Stashed changes
 min_force = -9  # tension
 max_force = 6  # compression
 
@@ -110,7 +129,7 @@ here modify the nodes, then test to see if it is cheaper etc
 '''
 lowest_cost = cost
 optimal = node_keys[:]
-# optimal = [(0.0, 0.0), (2.53557, 0.0), (2.535582, 5.00096), (6.0, 0.0), (9.46543, 0.0), (9.46543, 4.999009), (12.0, 0.0)]
+# optimal = [(0.07444648432088953, 0.0), (0.0, -1.7), (1.0744537244483783, 0.0), (4.250779934428552, 0.0), (6.0, -4.723678073560212), (7.750778170251026, 0.0), (10.962992185884186, 0.0), (12.0, -1.7), (11.963005943273274, 0.0)]
 lowest_nodes = [Vector(*i) for i in optimal]
 lowest_nodes.sort(key=lambda e: e[0])
 
@@ -120,7 +139,11 @@ print(calculate_cost(t1, t2), is_valid(t1, t2[:-3], A, B))
 
 for j in range(30):
     for i in range(2000):
+<<<<<<< Updated upstream
         new_node_positions = randomize_positions(lowest_nodes[:], A, B, 0.1, 0.0005)
+=======
+        new_node_positions, A, B = randomize_positions(lowest_nodes[:], A, B, 0.1, 0.005)
+>>>>>>> Stashed changes
 
         lines2 = reconstruct_lines(new_node_positions, adjacency_matrix)
         forces2 = np.round(solve_truss(lines2, A, B), decimals=4)
@@ -137,6 +160,7 @@ print()
 print(lowest_cost)
 print(node_keys)
 print(lowest_nodes)
+save_file(reconstruct_lines(lowest_nodes, adjacency_matrix), A, B)
 # [(0.0, 0.0), (2.5000583399605594, 0.0), (6.0, 0.0), (2.243839200260678, 2.3806116098316443), (5.993252074993606, 2.636416645606335), (12.0, 0.0), (9.5, 0.0), (9.77253585845522, 2.375205636183138)]
 # [(0.0, 0.0), (2.5000041257786654, 0.0), (6.0, 0.0), (2.243839200260678, 2.3806116098316443), (5.993033329747108, 2.636136034062877), (12.0, 0.0), (9.5, 0.0), (9.77253585845522, 2.375205636183138)]
 # [(0.0, 0.0), (2.5000041257786654, 0.0), (6.0, 0.0), (2.243839200260678, 2.3806116098316443), (5.993033329747108, 2.636136034062877), (12.0, 0.0), (9.5, 0.0), (9.770614792551388, 2.3753239267825688)]
