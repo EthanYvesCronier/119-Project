@@ -3,12 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="ae907bbe-81d9-4549-afdc-5c82f1ee0331" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/1026.DXF" beforeDir="false" afterPath="$PROJECT_DIR$/1026.DXF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/1027.09.bak" beforeDir="false" afterPath="$PROJECT_DIR$/1027.09.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DXFextractor.py" beforeDir="false" afterPath="$PROJECT_DIR$/DXFextractor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI-drawer.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI-drawer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/O.DXF" beforeDir="false" afterPath="$PROJECT_DIR$/O.DXF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Optimizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Optimizer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/acad.err" beforeDir="false" afterPath="$PROJECT_DIR$/acad.err" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bridgeEC.bak" beforeDir="false" afterPath="$PROJECT_DIR$/bridgeEC.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bridgeEC.dxf" beforeDir="false" afterPath="$PROJECT_DIR$/bridgeEC.dxf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bridge6.dxf" beforeDir="false" afterPath="$PROJECT_DIR$/bridge6.dxf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bridge7.bak" beforeDir="false" afterPath="$PROJECT_DIR$/bridge7.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bridge7.dxf" beforeDir="false" afterPath="$PROJECT_DIR$/bridge7.dxf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cheapest.dxf" beforeDir="false" afterPath="$PROJECT_DIR$/cheapest.dxf" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +24,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DXFextractor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1360">
-              <caret line="82" column="17" selection-start-line="82" selection-start-column="17" selection-end-line="82" selection-end-column="17" />
+            <state relative-caret-position="263">
+              <caret line="131" column="31" lean-forward="true" selection-start-line="131" selection-start-column="31" selection-end-line="131" selection-end-column="31" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -30,11 +33,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/GUI-drawer.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
-              <caret line="145" column="14" selection-start-line="145" selection-start-column="14" selection-end-line="145" selection-end-column="14" />
+              <caret line="145" column="14" lean-forward="true" selection-start-line="145" selection-start-column="14" selection-end-line="145" selection-end-column="14" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -42,11 +45,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Optimizer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1768">
-              <caret line="108" column="17" selection-start-line="108" selection-start-column="17" selection-end-line="108" selection-end-column="17" />
+            <state relative-caret-position="284">
+              <caret line="135" lean-forward="true" selection-start-line="135" selection-end-line="135" />
             </state>
           </provider>
         </entry>
@@ -92,8 +95,8 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/vector.py" />
         <option value="$PROJECT_DIR$/DXFextractor.py" />
-        <option value="$PROJECT_DIR$/Optimizer.py" />
         <option value="$PROJECT_DIR$/GUI-drawer.py" />
+        <option value="$PROJECT_DIR$/Optimizer.py" />
       </list>
     </option>
   </component>
@@ -139,7 +142,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.GUI-drawer">
+  <component name="RunManager" selected="Python.Optimizer">
     <configuration name="DXFextractor" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="119 Project" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -233,7 +236,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32932165" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.40953413" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2751896" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39869988" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -355,28 +358,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DXFextractor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="82" column="17" selection-start-line="82" selection-start-column="17" selection-end-line="82" selection-end-column="17" />
+        <state relative-caret-position="263">
+          <caret line="131" column="31" lean-forward="true" selection-start-line="131" selection-start-column="31" selection-end-line="131" selection-end-column="31" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Optimizer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1768">
-          <caret line="108" column="17" selection-start-line="108" selection-start-column="17" selection-end-line="108" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/GUI-drawer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
-          <caret line="145" column="14" selection-start-line="145" selection-start-column="14" selection-end-line="145" selection-end-column="14" />
+          <caret line="145" column="14" lean-forward="true" selection-start-line="145" selection-start-column="14" selection-end-line="145" selection-end-column="14" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Optimizer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="135" lean-forward="true" selection-start-line="135" selection-end-line="135" />
         </state>
       </provider>
     </entry>

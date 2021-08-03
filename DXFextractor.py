@@ -135,7 +135,7 @@ def solve_truss(lines, A, B):
     # plug the reaction force into the constant matrix
     for i, key in enumerate(nodes.keys()):
         if key in reaction_positions:
-            constant_matrix[2*i + 1] = -reactions[reaction_positions.index(key)]  # negative due to formula
+            constant_matrix[2*i + 1] = reactions[reaction_positions.index(key)]  # negative due to formula
 
     '''solve'''
     # solve system - F1, F2, F3, F4, ..., Ax, Ay, By

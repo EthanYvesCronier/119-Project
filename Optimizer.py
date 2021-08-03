@@ -103,11 +103,8 @@ def randomize_positions(node_positions, A, B, selection_rate, radius):
     return node_positions, a, b
 
 
-<<<<<<< Updated upstream
-file_name = 'bridge3.DXF'
-=======
-file_name = '1040.DXF'
->>>>>>> Stashed changes
+
+file_name = 'O.DXF'
 min_force = -9  # tension
 max_force = 6  # compression
 
@@ -139,11 +136,7 @@ print(calculate_cost(t1, t2), is_valid(t1, t2[:-3], A, B))
 
 for j in range(30):
     for i in range(2000):
-<<<<<<< Updated upstream
-        new_node_positions = randomize_positions(lowest_nodes[:], A, B, 0.1, 0.0005)
-=======
-        new_node_positions, A, B = randomize_positions(lowest_nodes[:], A, B, 0.1, 0.005)
->>>>>>> Stashed changes
+        new_node_positions, A, B = randomize_positions(lowest_nodes[:], A, B, 0.1, 0.02)
 
         lines2 = reconstruct_lines(new_node_positions, adjacency_matrix)
         forces2 = np.round(solve_truss(lines2, A, B), decimals=4)
