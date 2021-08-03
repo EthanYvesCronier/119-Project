@@ -80,7 +80,7 @@ def save_file(lines, A, B):
     doc.saveas('O.DXF')
 
 
-def randomize_positions(node_positions, A, B, selection_rate, radius):
+def randomize_positions(node_positions, A, B, selection_rate, radius, precison):
     a = A
     b = B
     for i, node in enumerate(node_positions):
@@ -95,7 +95,7 @@ def randomize_positions(node_positions, A, B, selection_rate, radius):
             if node[0] != 6 and node != a and node != b:   # randomize the x direction
                 rand_x = 2 * radius * (random.random() - 0.5)
 
-            vec = Vector(rand_x, rand_y)
+            vec = round(Vector(rand_x, rand_y), precison)
             if node == a or node == b:
                 pass
             else:
@@ -124,19 +124,23 @@ adjacency_matrix = get_adjacency_matrix(lines, node_keys)  # adjacency matrix wi
 '''
 here modify the nodes, then test to see if it is cheaper etc
 '''
-lowest_cost = cost
+lowest_cost = cost+2  # magic 2, remove later
 optimal = node_keys[:]
-# optimal = [(0.07444648432088953, 0.0), (0.0, -1.7), (1.0744537244483783, 0.0), (4.250779934428552, 0.0), (6.0, -4.723678073560212), (7.750778170251026, 0.0), (10.962992185884186, 0.0), (12.0, -1.7), (11.963005943273274, 0.0)]
+# optimal = [(0.0, 0.0), (1.98, 3.78), (3.5, 0.0), (6.0, 0.0), (8.5, 0.0), (10.02, 3.78), (12.0, 0.0)]
+optimal   = [(0.0, 0.0), (1.96, 3.75), (3.5, 0.0), (6.0, 0.0), (8.5, 0.0), (10.04, 3.75), (12.0, 0.0)]
+optimal   = [(0.0, 0.0), (1.96, 3.75), (3.5, 0.0), (6.0, 0.0), (8.5, 0.0), (10.04, 3.75), (12.0, 0.0)]
 lowest_nodes = [Vector(*i) for i in optimal]
 lowest_nodes.sort(key=lambda e: e[0])
 
 t1 = reconstruct_lines(lowest_nodes, adjacency_matrix)
 t2 = np.round(solve_truss(t1, A, B), decimals=4)
 print(calculate_cost(t1, t2), is_valid(t1, t2[:-3], A, B))
+save_file(t1, A, B)
+quit()
 
-for j in range(30):
+for j in range(10):
     for i in range(2000):
-        new_node_positions, A, B = randomize_positions(lowest_nodes[:], A, B, 0.1, 0.02)
+        new_node_positions, A, B = randomize_positions(lowest_nodes[:], A, B, 0.5, 0.04, 2)
 
         lines2 = reconstruct_lines(new_node_positions, adjacency_matrix)
         forces2 = np.round(solve_truss(lines2, A, B), decimals=4)

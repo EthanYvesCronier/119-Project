@@ -146,7 +146,7 @@ x_offset = 100
 y_offset = 600
 
 np.set_printoptions(linewidth=200)
-file_name = '998.DXF'
+file_name = 'O.DXF'
 # file_name = '1026.DXF'
 lines, (A, B) = extract_from_file(file_name)
 moddate = os.stat(file_name)[8]
