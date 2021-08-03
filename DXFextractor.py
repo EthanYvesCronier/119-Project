@@ -82,9 +82,9 @@ def solve_truss(lines, A, B):
     nodes = get_nodes_from_lines(lines)
     #print(nodes)
 
-    # print("nodes:", len(nodes))
-    # print("lines:", len(lines))
     if 2*len(nodes) != len(lines) + 3:
+        print("nodes:", len(nodes))
+        print("lines:", len(lines))
         print('bad system:')
         # system is indeterminate
         return None
